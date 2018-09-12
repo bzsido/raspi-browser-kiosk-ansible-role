@@ -7,7 +7,7 @@
   with_items:
     - unclutter
     - x11-xserver-utils
-    - chromium-browser
+    - "{{ browser_pkg }}"
     - ttf-mscorefonts-installer
   become: yes
   tags: ['install']
@@ -17,6 +17,17 @@
     path: '.config/lxsession/LXDE-pi/autostart'
     regexp: '(^@xscreensaver.*)'
     replace: '# \1'
-    backup: yes
-  become: yes
+    #backup: yes
+  tags: ['startup']
+
+- name: Append the browser starter script to autostart
+  blockinfile:
+    path: '.config/lxsession/LXDE-pi/autostart'
+    state: present
+    block: |
+      @/usr/bin/{{ browser_pkg }} --incognito --start-maximized --kiosk {{ kiosk_url }}
+      @unclutter # hide mouse cursor
+      @xset s off # disable screensaver
+      @xset s noblank # disable screen blanking
+      @xset -dpms # disable power management signaling
   tags: ['startup']

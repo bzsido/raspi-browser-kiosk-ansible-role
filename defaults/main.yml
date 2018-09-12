@@ -1,1 +1,3 @@
 ---
+browser_pkg: chromium
+kiosk_url: ovobots.com
