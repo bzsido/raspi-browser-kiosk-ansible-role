@@ -1,4 +1,22 @@
 ---
-- name: Eine Hallo-Welt-Nachricht
-  debug:
-    msg: 'Hello World!'
+- name: Install all necessary packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    install_recommends: no
+  with_items:
+    - unclutter
+    - x11-xserver-utils
+    - chromium-browser
+    - ttf-mscorefonts-installer
+  become: yes
+  tags: ['install']
+
+- name: Disable the screensaver in autostart
+  replace:
+    path: '.config/lxsession/LXDE-pi/autostart'
+    regexp: '(^@xscreensaver.*)'
+    replace: '# \1'
+    backup: yes
+  become: yes
+  tags: ['startup']
