@@ -1,0 +1,4 @@
+---
+- name: Eine Hallo-Welt-Nachricht
+  debug:
+    msg: 'Hello World!'
